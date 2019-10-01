@@ -8,7 +8,7 @@ namespace PostSportsToTwitterFunc
     public static class GetMlbScoreboard
     {
         [FunctionName("GetMlbScoreboard")]
-        public static async Task Run([TimerTrigger("0 0 * * * * ", RunOnStartup = true)]TimerInfo myTimer, ILogger log)
+        public static async Task Run([TimerTrigger("0 0 12 * * *", RunOnStartup = true)]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 

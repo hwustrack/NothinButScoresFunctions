@@ -74,7 +74,7 @@ namespace PostSportsToTwitterFunc
 
         private static string ParseScoreboardCompletedGame(JToken completedGame)
         {
-            return $"{completedGame["game"]["awayTeam"]["Abbreviation"]}: {completedGame["awayScore"]}," +
+            return $"{completedGame["game"]["awayTeam"]["Abbreviation"]}: {completedGame["awayScore"]}, " +
                 $"{completedGame["game"]["homeTeam"]["Abbreviation"]}: {completedGame["homeScore"]}";
         }
     }
