@@ -22,7 +22,7 @@ namespace PostSportsToTwitterFunc
             }
             else
             {
-                log.LogDebug("Tweet already posted. Exiting.");
+                log.LogInformation("Tweet already posted. Exiting.");
             }
         }
     }
