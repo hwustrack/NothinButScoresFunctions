@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Linq;
 using Tweetinvi;
+using Tweetinvi.Parameters;
 
 namespace PostSportsToTwitterFunc
 {
@@ -13,14 +12,19 @@ namespace PostSportsToTwitterFunc
         private static readonly string AccessToken = Environment.GetEnvironmentVariable("TwitterAccessToken");
         private static readonly string AccessTokenSecret = Environment.GetEnvironmentVariable("TwitterAccessTokenSecret");
 
-        public TwitterClient()
-        {
-            Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
-        }
-
         public void PostTweet(string content)
         {
+            Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
             Tweet.PublishTweet(content);
+        }
+
+        public bool FindTweet(string user, string content)
+        {
+            Auth.SetApplicationOnlyCredentials(ConsumerKey, ConsumerSecret, initializeBearerToken: true);
+
+            var searchParameters = new SearchTweetsParameters($"from:{user} \"{content}\"");
+            var tweets = Search.SearchTweets(searchParameters);
+            return tweets.Any();
         }
     }
 }
