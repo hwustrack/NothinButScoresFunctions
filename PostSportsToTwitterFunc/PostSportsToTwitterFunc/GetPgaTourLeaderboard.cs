@@ -12,7 +12,7 @@ namespace PostSportsToTwitterFunc
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            using (PgaTourClient pgaTourClient = new PgaTourClient())
+            using (PgaTourClient pgaTourClient = new PgaTourClient(log))
             {
                 var formattedLeaderboard = await pgaTourClient.GetFormattedLeaderboardAsync();
 

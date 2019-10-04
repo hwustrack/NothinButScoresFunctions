@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace PostSportsToTwitterFunc
@@ -9,10 +10,12 @@ namespace PostSportsToTwitterFunc
     public sealed class PgaTourClient : IDisposable
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger _log;
 
-        public PgaTourClient()
+        public PgaTourClient(ILogger log)
         {
             _httpClient = new HttpClient();
+            _log = log;
         }
 
         public async Task<string> GetFormattedLeaderboardAsync()
@@ -28,6 +31,7 @@ namespace PostSportsToTwitterFunc
             }
             else
             {
+                _log.LogInformation("Current round not complete. Exiting.");
                 return null;
             }
         }
@@ -52,7 +56,11 @@ namespace PostSportsToTwitterFunc
             string formattedResponse = string.Empty;
             string currentPosition;
             string playerName;
+            int currentRound;
             int currentScore;
+
+            currentRound = response["leaderboard"]["current_round"].Value<int>();
+            formattedResponse += $"Finished round {currentRound}.{Environment.NewLine}";
 
             for (int i = 0; i < 5; i++)
             {
