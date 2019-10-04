@@ -9,11 +9,15 @@ namespace PostSportsToTwitterFunc
 {
     public class MySportsFeedsClient : IDisposable
     {
+        public enum Sport
+        {
+            MLB,
+            NFL
+        };
+
         private const string SeasonName = "2019-regular";
         private const string Format = "json";
-        private static readonly string ForDate = (DateTime.Today - TimeSpan.FromDays(60)).ToString("yyyyMMdd");
         private static readonly Uri BaseUri = new Uri("https://api.mysportsfeeds.com");
-        private static readonly Uri GetMlbScoreboardUri = new Uri(BaseUri, $"v1.2/pull/mlb/{SeasonName}/scoreboard.{Format}?fordate={ForDate}");
         private static readonly string Username = Environment.GetEnvironmentVariable("MySportsFeedsUsername");
         private static readonly string Password = Environment.GetEnvironmentVariable("MySportsFeedsPassword");
 
@@ -26,8 +30,10 @@ namespace PostSportsToTwitterFunc
             _log = log;
         }
 
-        public async Task<string> GetGameStatusAsync()
+        public async Task<string> GetGameStatusAsync(Sport sport, DateTime forDate, string teamAbbreviation)
         {
+            string forDateString = forDate.ToString("yyyyMMdd");
+            Uri scoreboardUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/scoreboard.{Format}?fordate={forDateString}");
             string encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}"));
             _httpClient.DefaultRequestHeaders.Remove("Authorization");
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + encodedCredentials);
@@ -36,8 +42,8 @@ namespace PostSportsToTwitterFunc
 
             try
             {
-                var response = await _httpClient.GetStringAsync(GetMlbScoreboardUri);
-                gameStatus = ParseScoreboardResponse(response);
+                var response = await _httpClient.GetStringAsync(scoreboardUri);
+                gameStatus = ParseScoreboardResponse(response, forDateString, teamAbbreviation);
 
                 _log.LogInformation(gameStatus);
             }
@@ -49,27 +55,29 @@ namespace PostSportsToTwitterFunc
             return gameStatus;
         }
 
-        private static string ParseScoreboardResponse(string response)
+        private string ParseScoreboardResponse(string response, string forDateString, string teamAbbreviation)
         {
-            var teamToLookFor = "MIL";
-            var status = "undefined";
-
             var responseObject = JObject.Parse(response);
             var games = responseObject["scoreboard"]["gameScore"];
             foreach (var game in games)
             {
-                if (game["game"]["awayTeam"]["Abbreviation"].ToString() == teamToLookFor ||
-                    game["game"]["homeTeam"]["Abbreviation"].ToString() == teamToLookFor)
+                if (string.Equals(game["game"]["awayTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(game["game"]["homeTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (game["isUnplayed"].Value<bool>()) status = "unplayed";
-                    else if (game["isInProgress"].Value<bool>()) status = "in progress";
-                    else if (game["isCompleted"].Value<bool>()) status = $"complete. {ParseScoreboardCompletedGame(game)}";
-
-                    return $"{ForDate} {teamToLookFor} game is {status}.";
-                }
+                    if (game["isUnplayed"].Value<bool>() || game["isInProgress"].Value<bool>())
+                    {
+                        _log.LogInformation($"{forDateString} {teamAbbreviation} game is unplayed or in progress. Exiting.");
+                        return null;
+                    }
+                    else if (game["isCompleted"].Value<bool>())
+                    {
+                        return $"{forDateString} {teamAbbreviation} game is complete. {ParseScoreboardCompletedGame(game)}";
+                    }
+                } 
             }
 
-            return $"{teamToLookFor} not found.";
+            _log.LogInformation($"{teamAbbreviation} not found in scoreboard. Exiting.");
+            return null;
         }
 
         private static string ParseScoreboardCompletedGame(JToken completedGame)
