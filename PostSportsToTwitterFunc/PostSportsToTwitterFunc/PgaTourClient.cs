@@ -54,13 +54,15 @@ namespace PostSportsToTwitterFunc
         private static string FormatLeaderboard(JObject response)
         {
             string formattedResponse = string.Empty;
+            int currentRound;
+            string tournamentName;
             string currentPosition;
             string playerName;
-            int currentRound;
             int currentScore;
 
             currentRound = response["leaderboard"]["current_round"].Value<int>();
-            formattedResponse += $"Finished round {currentRound}.{Environment.NewLine}";
+            tournamentName = response["leaderboard"]["tournament_name"].Value<string>();
+            formattedResponse += $"Round {currentRound} of the {tournamentName} is complete. {Environment.NewLine}";
 
             for (int i = 0; i < 5; i++)
             {
