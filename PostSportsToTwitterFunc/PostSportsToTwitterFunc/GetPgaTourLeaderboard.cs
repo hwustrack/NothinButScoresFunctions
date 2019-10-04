@@ -1,23 +1,23 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
 namespace PostSportsToTwitterFunc
 {
-    public static class GetMlbScoreboard
+    public static class GetPgaTourLeaderboard
     {
-        [FunctionName("GetMlbScoreboard")]
+        [FunctionName("GetPgaTourLeaderboard")]
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log))
+            using (PgaTourClient pgaTourClient = new PgaTourClient())
             {
-                string gameStatus = await sportsClient.GetGameStatusAsync();
+                var formattedLeaderboard = await pgaTourClient.GetFormattedLeaderboardAsync();
 
                 TwitterClient twitterClient = new TwitterClient(log);
-                twitterClient.PostTweetIfNotAlreadyPosted("qxnpop", gameStatus);
+                twitterClient.PostTweetIfNotAlreadyPosted("qxnpop", formattedLeaderboard);
             }
         }
     }

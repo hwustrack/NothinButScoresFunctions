@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PostSportsToTwitterFunc
 {
-    public class MySportsFeedsClient
+    public class MySportsFeedsClient : IDisposable
     {
         private const string SeasonName = "2019-regular";
         private const string Format = "json";
@@ -36,7 +36,7 @@ namespace PostSportsToTwitterFunc
 
             try
             {
-                string response = await _httpClient.GetStringAsync(GetMlbScoreboardUri);
+                var response = await _httpClient.GetStringAsync(GetMlbScoreboardUri);
                 gameStatus = ParseScoreboardResponse(response);
 
                 _log.LogInformation(gameStatus);
@@ -77,5 +77,29 @@ namespace PostSportsToTwitterFunc
             return $"{completedGame["game"]["awayTeam"]["Abbreviation"]}: {completedGame["awayScore"]}, " +
                 $"{completedGame["game"]["homeTeam"]["Abbreviation"]}: {completedGame["homeScore"]}";
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _httpClient.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
     }
 }
