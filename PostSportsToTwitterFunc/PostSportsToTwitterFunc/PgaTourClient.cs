@@ -48,7 +48,7 @@ namespace PostSportsToTwitterFunc
         private static bool IsRoundComplete(JObject response)
         {
             var distinctValues = response["leaderboard"]["players"].Children()["thru"].Values<int?>().Distinct();
-            return distinctValues.Count() == 1 && distinctValues.First() == 18;
+            return distinctValues.Count() <= 2 && distinctValues.Contains(18) && distinctValues.Contains(null); // cut players have null
         }
 
         private static string FormatLeaderboard(JObject response)
@@ -62,7 +62,7 @@ namespace PostSportsToTwitterFunc
 
             currentRound = response["leaderboard"]["current_round"].Value<int>();
             tournamentName = response["leaderboard"]["tournament_name"].Value<string>();
-            formattedResponse += $"Round {currentRound} of the {tournamentName} is complete. {Environment.NewLine}";
+            formattedResponse += $"Round {currentRound} of the {tournamentName} is complete.{Environment.NewLine}{Environment.NewLine}";
 
             for (int i = 0; i < 5; i++)
             {

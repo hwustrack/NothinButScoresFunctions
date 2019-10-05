@@ -50,7 +50,7 @@ namespace PostSportsToTwitterFunc
 
             var searchParameters = new SearchTweetsParameters($"from:{user} \"{content}\"");
             var tweets = Search.SearchTweets(searchParameters);
-            return tweets.Any();
+            return tweets != null ? tweets.Any() : false;
         }
     }
 }
