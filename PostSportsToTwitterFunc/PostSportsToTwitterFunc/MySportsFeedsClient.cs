@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +34,7 @@ namespace PostSportsToTwitterFunc
 
         public async Task<string> GetGameStatusAsync(Sport sport, DateTime forDate, string teamAbbreviation)
         {
-            string forDateString = forDate.ToString("yyyyMMdd");
+            string forDateString = forDate.ToString("yyyyMMdd", new CultureInfo("en-US"));
             Uri scoreboardUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/scoreboard.{Format}?fordate={forDateString}");
             string encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}"));
             _httpClient.DefaultRequestHeaders.Remove("Authorization");
@@ -44,8 +46,6 @@ namespace PostSportsToTwitterFunc
             {
                 var response = await _httpClient.GetStringAsync(scoreboardUri);
                 gameStatus = ParseScoreboardResponse(response, forDateString, teamAbbreviation);
-
-                _log.LogInformation(gameStatus);
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace PostSportsToTwitterFunc
         {
             var responseObject = JObject.Parse(response);
             var games = responseObject["scoreboard"]["gameScore"];
-            foreach (var game in games)
+            foreach (var game in games ?? Enumerable.Empty<JToken>())
             {
                 if (string.Equals(game["game"]["awayTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(game["game"]["homeTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase))
