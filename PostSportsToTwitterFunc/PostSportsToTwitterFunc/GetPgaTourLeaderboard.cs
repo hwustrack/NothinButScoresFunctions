@@ -10,8 +10,6 @@ namespace PostSportsToTwitterFunc
         [FunctionName("GetPgaTourLeaderboard")]
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-
             using (PgaTourClient pgaTourClient = new PgaTourClient(log))
             {
                 var formattedLeaderboard = await pgaTourClient.GetFormattedLeaderboardAsync();

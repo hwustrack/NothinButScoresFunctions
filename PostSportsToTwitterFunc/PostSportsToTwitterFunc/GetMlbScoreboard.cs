@@ -14,8 +14,6 @@ namespace PostSportsToTwitterFunc
         [FunctionName("GetMlbScoreboard")]
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-
             using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log))
             {
                 string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, TeamAbbreviation);
