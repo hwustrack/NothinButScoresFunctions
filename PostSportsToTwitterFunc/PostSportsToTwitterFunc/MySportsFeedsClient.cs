@@ -14,7 +14,8 @@ namespace PostSportsToTwitterFunc
         public enum Sport
         {
             MLB,
-            NFL
+            NFL,
+            NHL
         };
 
         private const string SeasonName = "2019-regular";
@@ -57,8 +58,8 @@ namespace PostSportsToTwitterFunc
 
         private string ParseScoreboardResponse(string response, string forDateString, string teamAbbreviation)
         {
-            var responseObject = JObject.Parse(response);
-            var games = responseObject["scoreboard"]["gameScore"];
+            var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
+            var games = responseObject?["scoreboard"]?["gameScore"];
             foreach (var game in games ?? Enumerable.Empty<JToken>())
             {
                 if (string.Equals(game["game"]["awayTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase) ||
