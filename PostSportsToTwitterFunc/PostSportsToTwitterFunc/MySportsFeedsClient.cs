@@ -29,10 +29,48 @@ namespace PostSportsToTwitterFunc
 
         public MySportsFeedsClient(ILogger log)
         {
-            _httpClient = new HttpClient();
             _log = log;
+            _httpClient = new HttpClient();
+            string encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}"));
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + encodedCredentials);
         }
 
+        public async Task<string> GetGameStatus2Async(Sport sport, DateTime forDate, string teamAbbreviation)
+        {
+            string forDateString = GetFormattedDateTime(forDate);
+            Uri scheduleUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/daily_game_schedule.{Format}?team={teamAbbreviation}&fordate={forDateString}");
+            
+            var response = await _httpClient.GetStringAsync(scheduleUri);
+            var gameId = GetGameIdFromScheduleResponse(response);
+            if (gameId == null) return null;
+
+            Uri boxScoreUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/game_boxscore.{Format}?gameid={gameId}&teamstats=none&playerstats=none");
+
+            response = await _httpClient.GetStringAsync(boxScoreUri); // will return 204 if not complete
+            var gameStatus = GetGameStatusFromBoxscoreResponse(response, forDateString, teamAbbreviation);
+
+            return gameStatus;
+        }
+
+        private int? GetGameIdFromScheduleResponse(string response)
+        {
+            var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
+            var gameId = responseObject?["dailygameschedule"]?["gameentry"]?[0]?["id"].Value<int>();
+            return gameId;
+        }
+
+        private string GetGameStatusFromBoxscoreResponse(string response, string forDateString, string teamAbbreviation)
+        {
+            var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
+            var awayTeam = responseObject?["gameboxscore"]?["game"]?["awayTeam"]?["Abbreviation"].Value<string>();
+            var homeTeam = responseObject?["gameboxscore"]?["game"]?["homeTeam"]?["Abbreviation"].Value<string>();
+            var awayScore = responseObject?["gameboxscore"]?["periodSummary"]?["periodTotals"]?["awayScore"].Value<string>();
+            var homeScore = responseObject?["gameboxscore"]?["periodSummary"]?["periodTotals"]?["homeScore"].Value<string>();
+            return $"{forDateString} {teamAbbreviation} game is complete - {awayTeam}: {awayScore}, {homeTeam}: {homeScore}.";
+        }
+
+        #region GetGameStatus
         public async Task<string> GetGameStatusAsync(Sport sport, DateTime forDate, string teamAbbreviation)
         {
             string forDateString = forDate.ToString("yyyyMMdd", new CultureInfo("en-US"));
@@ -85,6 +123,12 @@ namespace PostSportsToTwitterFunc
         {
             return $"{completedGame["game"]["awayTeam"]["Abbreviation"]}: {completedGame["awayScore"]}, " +
                 $"{completedGame["game"]["homeTeam"]["Abbreviation"]}: {completedGame["homeScore"]}";
+        }
+        #endregion
+
+        private static string GetFormattedDateTime(DateTime dateTime)
+        {
+            return dateTime.ToString("yyyyMMdd", new CultureInfo("en-US"));
         }
 
         #region IDisposable Support
