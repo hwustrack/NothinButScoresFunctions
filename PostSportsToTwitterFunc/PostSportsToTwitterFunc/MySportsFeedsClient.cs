@@ -63,6 +63,13 @@ namespace PostSportsToTwitterFunc
         private string GetGameStatusFromBoxscoreResponse(string response, string forDateString, string teamAbbreviation)
         {
             var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
+
+            if (responseObject == null)
+            {
+                _log.LogInformation($"{teamAbbreviation} boxscore not found. Exiting.");
+                return null;
+            }
+
             var awayTeam = responseObject?["gameboxscore"]?["game"]?["awayTeam"]?["Abbreviation"].Value<string>();
             var homeTeam = responseObject?["gameboxscore"]?["game"]?["homeTeam"]?["Abbreviation"].Value<string>();
             var awayScore = responseObject?["gameboxscore"]?["periodSummary"]?["periodTotals"]?["awayScore"].Value<string>();
