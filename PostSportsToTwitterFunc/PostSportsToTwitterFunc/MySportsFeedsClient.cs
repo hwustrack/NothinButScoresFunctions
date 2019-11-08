@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -15,14 +16,20 @@ namespace PostSportsToTwitterFunc
         {
             MLB,
             NFL,
-            NHL
+            NHL,
+            NBA
         };
 
-        private const string SeasonName = "2019-regular";
+        private const string SeasonName = "current";
         private const string Format = "json";
         private static readonly Uri BaseUri = new Uri("https://api.mysportsfeeds.com");
         private static readonly string Username = Environment.GetEnvironmentVariable("MySportsFeedsUsername");
         private static readonly string Password = Environment.GetEnvironmentVariable("MySportsFeedsPassword");
+        private static readonly Dictionary<Sport, string> SportToBoxscoreScoreKey = new Dictionary<Sport, string>()
+        {
+            { Sport.NHL, "period" },
+            { Sport.NBA, "quarter" },
+        };
 
         private readonly HttpClient _httpClient;
         private readonly ILogger _log;
@@ -48,7 +55,7 @@ namespace PostSportsToTwitterFunc
             Uri boxScoreUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/game_boxscore.{Format}?gameid={gameId}&teamstats=none&playerstats=none");
 
             response = await _httpClient.GetStringAsync(boxScoreUri); // will return 204 if not complete
-            var gameStatus = GetGameStatusFromBoxscoreResponse(response, forDateString, teamAbbreviation);
+            var gameStatus = GetGameStatusFromBoxscoreResponse(response, sport, forDateString, teamAbbreviation);
 
             return gameStatus;
         }
@@ -60,7 +67,7 @@ namespace PostSportsToTwitterFunc
             return gameId;
         }
 
-        private string GetGameStatusFromBoxscoreResponse(string response, string forDateString, string teamAbbreviation)
+        private string GetGameStatusFromBoxscoreResponse(string response, Sport sport, string forDateString, string teamAbbreviation)
         {
             var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
 
@@ -70,10 +77,11 @@ namespace PostSportsToTwitterFunc
                 return null;
             }
 
+            var scoreKey = SportToBoxscoreScoreKey[sport];
             var awayTeam = responseObject?["gameboxscore"]?["game"]?["awayTeam"]?["Abbreviation"].Value<string>();
             var homeTeam = responseObject?["gameboxscore"]?["game"]?["homeTeam"]?["Abbreviation"].Value<string>();
-            var awayScore = responseObject?["gameboxscore"]?["periodSummary"]?["periodTotals"]?["awayScore"].Value<string>();
-            var homeScore = responseObject?["gameboxscore"]?["periodSummary"]?["periodTotals"]?["homeScore"].Value<string>();
+            var awayScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["awayScore"].Value<string>();
+            var homeScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["homeScore"].Value<string>();
             return $"{forDateString} {teamAbbreviation} game is complete - {awayTeam}: {awayScore}, {homeTeam}: {homeScore}.";
         }
 
