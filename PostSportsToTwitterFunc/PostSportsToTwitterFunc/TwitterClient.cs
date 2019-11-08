@@ -10,8 +10,6 @@ namespace PostSportsToTwitterFunc
     {
         private static readonly string ConsumerKey = Environment.GetEnvironmentVariable("TwitterConsumerKey");
         private static readonly string ConsumerSecret = Environment.GetEnvironmentVariable("TwitterConsumerSecret");
-        private static readonly string AccessToken = Environment.GetEnvironmentVariable("TwitterAccessToken");
-        private static readonly string AccessTokenSecret = Environment.GetEnvironmentVariable("TwitterAccessTokenSecret");
 
         private readonly ILogger _log;
 
@@ -24,7 +22,7 @@ namespace PostSportsToTwitterFunc
         {
             if (!FindTweet(user, content))
             {
-                PostTweet(content);
+                PostTweet(user, content);
             }
             else
             {
@@ -33,11 +31,13 @@ namespace PostSportsToTwitterFunc
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
-        public void PostTweet(string content)
+        public void PostTweet(string user, string content)
         {
             if (string.IsNullOrEmpty(content)) return;
 
-            Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, AccessToken, AccessTokenSecret);
+            var accessToken = Environment.GetEnvironmentVariable($"TwitterAccessToken:{user}");
+            var accessTokenSecret = Environment.GetEnvironmentVariable($"TwitterAccessTokenSecret:{user}");
+            Auth.SetUserCredentials(ConsumerKey, ConsumerSecret, accessToken, accessTokenSecret);
             Tweet.PublishTweet(content);
         }
 
