@@ -19,7 +19,7 @@ namespace PostSportsToTwitterFunc
                 string gameStatus = await sportsClient.GetGameStatus2Async(Sport, ForDate, TeamAbbreviation);
 
                 TwitterClient twitterClient = new TwitterClient(log);
-                twitterClient.PostTweetIfNotAlreadyPosted("Scores_Bucks", gameStatus);
+                twitterClient.PostTweetIfNotAlreadyPosted("BucksScores", gameStatus);
             }
         }
     }
