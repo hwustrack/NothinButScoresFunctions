@@ -15,7 +15,7 @@ namespace PostSportsToTwitterFunc
                 var formattedLeaderboard = await pgaTourClient.GetFormattedLeaderboardAsync();
 
                 TwitterClient twitterClient = new TwitterClient(log);
-                twitterClient.PostTweetIfNotAlreadyPosted("qxnpop", formattedLeaderboard);
+                twitterClient.PostTweetIfNotAlreadyPosted("PGATourScores", formattedLeaderboard);
             }
         }
     }
