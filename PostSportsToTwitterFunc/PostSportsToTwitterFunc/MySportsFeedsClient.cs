@@ -55,7 +55,7 @@ namespace PostSportsToTwitterFunc
             Uri boxScoreUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/game_boxscore.{Format}?gameid={gameId}&teamstats=none&playerstats=none");
 
             response = await _httpClient.GetStringAsync(boxScoreUri); // will return 204 if not complete
-            var gameStatus = GetGameStatusFromBoxscoreResponse(response, sport, forDateString, teamAbbreviation);
+            var gameStatus = GetGameStatusFromBoxscoreResponse(response, sport, forDate, teamAbbreviation);
 
             return gameStatus;
         }
@@ -67,7 +67,7 @@ namespace PostSportsToTwitterFunc
             return gameId;
         }
 
-        private string GetGameStatusFromBoxscoreResponse(string response, Sport sport, string forDateString, string teamAbbreviation)
+        private string GetGameStatusFromBoxscoreResponse(string response, Sport sport, DateTime forDate, string teamAbbreviation)
         {
             var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
 
@@ -82,7 +82,9 @@ namespace PostSportsToTwitterFunc
             var homeTeam = responseObject?["gameboxscore"]?["game"]?["homeTeam"]?["Abbreviation"].Value<string>();
             var awayScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["awayScore"].Value<string>();
             var homeScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["homeScore"].Value<string>();
-            return $"{forDateString} {teamAbbreviation} game is complete - {awayTeam}: {awayScore}, {homeTeam}: {homeScore}.";
+            return $"{teamAbbreviation} game is complete{Environment.NewLine}" +
+                $"{awayTeam}: {awayScore}, {homeTeam}: {homeScore}{Environment.NewLine}" +
+                $"{forDate.ToLongDateString()}";
         }
 
         #region GetGameStatus
