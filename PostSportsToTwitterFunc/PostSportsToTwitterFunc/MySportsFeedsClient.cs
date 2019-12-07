@@ -80,9 +80,11 @@ namespace PostSportsToTwitterFunc
             var scoreKey = SportToBoxscoreScoreKey[sport];
             var awayTeam = responseObject?["gameboxscore"]?["game"]?["awayTeam"]?["Abbreviation"].Value<string>();
             var homeTeam = responseObject?["gameboxscore"]?["game"]?["homeTeam"]?["Abbreviation"].Value<string>();
+            var teamKey = awayTeam == teamAbbreviation ? "awayTeam" : "homeTeam";
+            var teamName = responseObject?["gameboxscore"]?["game"]?[teamKey]?["Name"].Value<string>();
             var awayScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["awayScore"].Value<string>();
             var homeScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["homeScore"].Value<string>();
-            return $"{teamAbbreviation} game is complete{Environment.NewLine}" +
+            return $"{teamName} game is complete{Environment.NewLine}." +
                 $"{awayTeam}: {awayScore}, {homeTeam}: {homeScore}{Environment.NewLine}" +
                 $"{forDate.ToLongDateString()}";
         }
