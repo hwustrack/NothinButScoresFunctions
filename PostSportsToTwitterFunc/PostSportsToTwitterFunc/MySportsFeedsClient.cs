@@ -84,7 +84,7 @@ namespace PostSportsToTwitterFunc
             var teamName = responseObject?["gameboxscore"]?["game"]?[teamKey]?["Name"].Value<string>();
             var awayScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["awayScore"].Value<string>();
             var homeScore = responseObject?["gameboxscore"]?[$"{scoreKey}Summary"]?[$"{scoreKey}Totals"]?["homeScore"].Value<string>();
-            return $"{teamName} game is complete{Environment.NewLine}." +
+            return $"{teamName} game is complete.{Environment.NewLine}" +
                 $"{awayTeam}: {awayScore}, {homeTeam}: {homeScore}{Environment.NewLine}" +
                 $"{forDate.ToLongDateString()}";
         }
