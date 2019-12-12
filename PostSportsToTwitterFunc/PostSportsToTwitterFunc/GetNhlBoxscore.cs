@@ -11,6 +11,7 @@ namespace PostSportsToTwitterFunc
         private const string TeamAbbreviation = "STL";
         private static readonly DateTime ForDate = DateTime.UtcNow - TimeSpan.FromHours(12); // give a longer window for game to be finalized in sports api
 
+        [Disable] // disabled until I get unlimited requests and create the dedicated account
         [FunctionName("GetNhlBoxscore")]
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
