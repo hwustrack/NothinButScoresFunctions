@@ -1,0 +1,29 @@
+{
+  "dailygameschedule": {
+    "lastUpdatedOn": "2019-12-12 12:24:23 AM",
+    "gameentry": [
+      {
+        "id": "53387",
+        "scheduleStatus": "Normal",
+        "originalDate": null,
+        "originalTime": null,
+        "delayedOrPostponedReason": null,
+        "date": "2019-12-09",
+        "time": "8:00PM",
+        "awayTeam": {
+          "ID": "81",
+          "City": "Toronto",
+          "Name": "Raptors",
+          "Abbreviation": "TOR"
+        },
+        "homeTeam": {
+          "ID": "89",
+          "City": "Chicago",
+          "Name": "Bulls",
+          "Abbreviation": "CHI"
+        },
+        "location": "United Center"
+      }
+    ]
+  }
+}

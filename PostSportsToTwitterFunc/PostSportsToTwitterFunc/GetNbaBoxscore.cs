@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -19,11 +20,12 @@ namespace PostSportsToTwitterFunc
         [FunctionName("GetNbaBoxscore")]
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log))
+            using (HttpClient httpClient = new HttpClient())
+            using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log, httpClient))
             {
                 foreach (Team team in Teams)
                 {
-                    string gameStatus = await sportsClient.GetGameStatus2Async(Sport, ForDate, team.TeamAbbreviation);
+                    string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, team.TeamAbbreviation);
 
                     TwitterClient twitterClient = new TwitterClient(log);
                     twitterClient.PostTweetIfNotAlreadyPosted(team.TwitterUser, gameStatus);

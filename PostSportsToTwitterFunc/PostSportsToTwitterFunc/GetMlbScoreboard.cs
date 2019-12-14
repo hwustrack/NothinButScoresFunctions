@@ -15,13 +15,13 @@ namespace PostSportsToTwitterFunc
         [FunctionName("GetMlbScoreboard")]
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log))
-            {
-                string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, TeamAbbreviation);
+            //using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log))
+            //{
+            //    string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, TeamAbbreviation);
 
-                TwitterClient twitterClient = new TwitterClient(log);
-                twitterClient.PostTweetIfNotAlreadyPosted("qxnpop", gameStatus);
-            }
+            //    TwitterClient twitterClient = new TwitterClient(log);
+            //    twitterClient.PostTweetIfNotAlreadyPosted("qxnpop", gameStatus);
+            //}
         }
     }
 }

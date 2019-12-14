@@ -34,16 +34,16 @@ namespace PostSportsToTwitterFunc
         private readonly HttpClient _httpClient;
         private readonly ILogger _log;
 
-        public MySportsFeedsClient(ILogger log)
+        public MySportsFeedsClient(ILogger log, HttpClient httpClient)
         {
             _log = log;
-            _httpClient = new HttpClient();
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             string encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}"));
             _httpClient.DefaultRequestHeaders.Remove("Authorization");
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + encodedCredentials);
         }
 
-        public async Task<string> GetGameStatus2Async(Sport sport, DateTime forDate, string teamAbbreviation)
+        public async Task<string> GetGameStatusAsync(Sport sport, DateTime forDate, string teamAbbreviation)
         {
             string forDateString = GetFormattedDateTime(forDate);
             Uri scheduleUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/daily_game_schedule.{Format}?team={teamAbbreviation}&fordate={forDateString}");
@@ -88,62 +88,6 @@ namespace PostSportsToTwitterFunc
                 $"{awayTeam}: {awayScore}, {homeTeam}: {homeScore}{Environment.NewLine}" +
                 $"{forDate.ToLongDateString()}";
         }
-
-        #region GetGameStatus
-        public async Task<string> GetGameStatusAsync(Sport sport, DateTime forDate, string teamAbbreviation)
-        {
-            string forDateString = forDate.ToString("yyyyMMdd", new CultureInfo("en-US"));
-            Uri scoreboardUri = new Uri(BaseUri, $"v1.2/pull/{sport}/{SeasonName}/scoreboard.{Format}?fordate={forDateString}");
-            string encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}"));
-            _httpClient.DefaultRequestHeaders.Remove("Authorization");
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + encodedCredentials);
-
-            string gameStatus = string.Empty;
-
-            try
-            {
-                var response = await _httpClient.GetStringAsync(scoreboardUri);
-                gameStatus = ParseScoreboardResponse(response, forDateString, teamAbbreviation);
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex, "Exception thrown when making or parsing web request.");
-            }
-
-            return gameStatus;
-        }
-
-        private string ParseScoreboardResponse(string response, string forDateString, string teamAbbreviation)
-        {
-            var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
-            var games = responseObject?["scoreboard"]?["gameScore"];
-            foreach (var game in games ?? Enumerable.Empty<JToken>())
-            {
-                if (string.Equals(game["game"]["awayTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(game["game"]["homeTeam"]["Abbreviation"].ToString(), teamAbbreviation, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (game["isUnplayed"].Value<bool>() || game["isInProgress"].Value<bool>())
-                    {
-                        _log.LogInformation($"{forDateString} {teamAbbreviation} game is unplayed or in progress. Exiting.");
-                        return null;
-                    }
-                    else if (game["isCompleted"].Value<bool>())
-                    {
-                        return $"{forDateString} {teamAbbreviation} game is complete. {ParseScoreboardCompletedGame(game)}";
-                    }
-                } 
-            }
-
-            _log.LogInformation($"{teamAbbreviation} not found in scoreboard. Exiting.");
-            return null;
-        }
-
-        private static string ParseScoreboardCompletedGame(JToken completedGame)
-        {
-            return $"{completedGame["game"]["awayTeam"]["Abbreviation"]}: {completedGame["awayScore"]}, " +
-                $"{completedGame["game"]["homeTeam"]["Abbreviation"]}: {completedGame["homeScore"]}";
-        }
-        #endregion
 
         private static string GetFormattedDateTime(DateTime dateTime)
         {

@@ -1,0 +1,754 @@
+{
+  "gameboxscore": {
+    "lastUpdatedOn": "2019-12-12 12:24:32 AM",
+    "game": {
+      "date": "2019-12-09",
+      "time": "8:00PM",
+      "awayTeam": {
+        "ID": "81",
+        "City": "Toronto",
+        "Name": "Raptors",
+        "Abbreviation": "TOR"
+      },
+      "homeTeam": {
+        "ID": "89",
+        "City": "Chicago",
+        "Name": "Bulls",
+        "Abbreviation": "CHI"
+      },
+      "location": "United Center"
+    },
+    "quarterSummary": {
+      "quarter": [
+        {
+          "@number": "1",
+          "awayScore": "30",
+          "homeScore": "30",
+          "scoring": {
+            "scoringPlay": [
+              {
+                "time": "0:46",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Pullup Jump shot: Made (2 PTS)"
+              },
+              {
+                "time": "1:20",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Markkanen Driving Dunk Shot: Made (2 PTS) Assist: LaVine (1 AST)"
+              },
+              {
+                "time": "1:35",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Layup Shot: Made (4 PTS)"
+              },
+              {
+                "time": "2:06",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry Step Back Jump shot: Made (2 PTS) Assist: Powell (1 AST)"
+              },
+              {
+                "time": "2:37",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Fadeaway Jump Shot: Made (2 PTS) Assist: Satoransky (1 AST)"
+              },
+              {
+                "time": "2:59",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Free Throw 1 of 2 (3 PTS"
+              },
+              {
+                "time": "2:59",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Free Throw 2 of 2 (4 PTS"
+              },
+              {
+                "time": "3:16",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Putback Layup Shot: Made (2 PTS)"
+              },
+              {
+                "time": "3:28",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Satoransky Jump Shot: Made (2 PTS) Assist: Carter Jr. (1 AST)"
+              },
+              {
+                "time": "3:40",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell 3pt Shot: Made (5 PTS) Assist: Gasol (1 AST)"
+              },
+              {
+                "time": "4:07",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Fadeaway Jump Shot: Made (6 PTS)"
+              },
+              {
+                "time": "4:22",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Satoransky 3pt Shot: Made (5 PTS) Assist: Carter Jr. (2 AST)"
+              },
+              {
+                "time": "4:51",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Dunk Shot: Made (2 PTS) Assist: Satoransky (2 AST)"
+              },
+              {
+                "time": "5:15",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam 3pt Shot: Made (9 PTS) Assist: Gasol (2 AST)"
+              },
+              {
+                "time": "5:27",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Dunk Shot: Made (4 PTS) Assist: LaVine (2 AST)"
+              },
+              {
+                "time": "6:08",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Free Throw 2 of 2 (10 PTS"
+              },
+              {
+                "time": "7:09",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry 3pt Shot: Made (5 PTS) Assist: Powell (2 AST)"
+              },
+              {
+                "time": "7:24",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Turnaround Jump Shot: Made (6 PTS) Assist: Satoransky (3 AST)"
+              },
+              {
+                "time": "7:45",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam 3pt Shot: Made (13 PTS) Assist: Lowry (1 AST)"
+              },
+              {
+                "time": "8:10",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine 3pt Shot: Made (7 PTS) Assist: Carter Jr. (3 AST)"
+              },
+              {
+                "time": "8:35",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Gasol 3pt Shot: Made (3 PTS) Assist: Lowry (2 AST)"
+              },
+              {
+                "time": "8:56",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Driving Layup Shot: Made (9 PTS)"
+              },
+              {
+                "time": "9:13",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Alley Oop Dunk Shot: Made (8 PTS) Assist: Satoransky (4 AST)"
+              },
+              {
+                "time": "10:41",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Hollis-Jefferson Reverse Layup Shot: Made (2 PTS) Assist: Siakam (1 AST)"
+              },
+              {
+                "time": "10:56",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Free Throw 1 of 2 (10 PTS"
+              },
+              {
+                "time": "10:56",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Free Throw 2 of 2 (11 PTS"
+              },
+              {
+                "time": "11:33",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine 3pt Shot: Made (14 PTS)"
+              },
+              {
+                "time": "11:58",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka Putback Layup Shot: Made (2 PTS)"
+              },
+              {
+                "time": "12:00",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Free Throw 3 of 3 (15 PTS"
+              }
+            ]
+          }
+        },
+        {
+          "@number": "2",
+          "awayScore": "19",
+          "homeScore": "21",
+          "scoring": {
+            "scoringPlay": [
+              {
+                "time": "0:37",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Dunk Shot: Made (2 PTS) Assist: Young (1 AST)"
+              },
+              {
+                "time": "1:21",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Hollis-Jefferson Layup Shot: Made (4 PTS) Assist: Lowry (3 AST)"
+              },
+              {
+                "time": "2:18",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka Putback Layup Shot: Made (4 PTS)"
+              },
+              {
+                "time": "2:46",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Hollis-Jefferson Layup Shot: Made (6 PTS)"
+              },
+              {
+                "time": "3:48",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Markkanen Free Throw 1 of 2 (3 PTS"
+              },
+              {
+                "time": "4:19",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Markkanen 3pt Shot: Made (6 PTS) Assist: Satoransky (5 AST)"
+              },
+              {
+                "time": "5:05",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Gasol Jump Shot: Made (5 PTS) Assist: Anunoby (1 AST)"
+              },
+              {
+                "time": "6:55",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Boucher 3pt Shot: Made (3 PTS) Assist: Gasol (3 AST)"
+              },
+              {
+                "time": "7:27",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine Running Layup Shot: Made (17 PTS) Assist: Satoransky (6 AST)"
+              },
+              {
+                "time": "8:46",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Pullup Jump shot: Made (7 PTS)"
+              },
+              {
+                "time": "9:00",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Layup Shot: Made (10 PTS) Assist: Satoransky (7 AST)"
+              },
+              {
+                "time": "9:00",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Free Throw 1 of 1 (11 PTS"
+              },
+              {
+                "time": "9:17",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Anunoby Driving Layup Shot: Made (2 PTS) Assist: Gasol (4 AST)"
+              },
+              {
+                "time": "9:28",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Markkanen Driving Dunk Shot: Made (8 PTS) Assist: LaVine (3 AST)"
+              },
+              {
+                "time": "9:40",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Gasol Cutting Dunk Shot: Made (7 PTS) Assist: Powell (3 AST)"
+              },
+              {
+                "time": "10:06",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Satoransky 3pt Shot: Made (8 PTS) Assist: LaVine (4 AST)"
+              },
+              {
+                "time": "10:41",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Driving Dunk Shot: Made (9 PTS) Assist: Lowry (4 AST)"
+              },
+              {
+                "time": "10:51",
+                "teamAbbreviation": "CHI",
+                "playDescription": "LaVine 3pt Shot: Made (20 PTS)"
+              },
+              {
+                "time": "11:26",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Layup Shot: Made (4 PTS) Assist: LaVine (5 AST)"
+              }
+            ]
+          }
+        },
+        {
+          "@number": "3",
+          "awayScore": "22",
+          "homeScore": "20",
+          "scoring": {
+            "scoringPlay": [
+              {
+                "time": "0:34",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Free Throw 1 of 2 (10 PTS"
+              },
+              {
+                "time": "1:29",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Markkanen Cutting Layup Shot: Made (10 PTS) Assist: Satoransky (8 AST)"
+              },
+              {
+                "time": "2:14",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Satoransky Floating Jump shot: Made (10 PTS) Assist: Dunn (1 AST)"
+              },
+              {
+                "time": "3:37",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Free Throw 2 of 2 (11 PTS"
+              },
+              {
+                "time": "4:31",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Free Throw 1 of 2 (12 PTS"
+              },
+              {
+                "time": "4:31",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Free Throw 2 of 2 (13 PTS"
+              },
+              {
+                "time": "4:50",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Anunoby Driving Layup Shot: Made (4 PTS) Assist: Gasol (5 AST)"
+              },
+              {
+                "time": "5:31",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Free Throw 1 of 2 (14 PTS"
+              },
+              {
+                "time": "5:31",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Free Throw 2 of 2 (15 PTS"
+              },
+              {
+                "time": "5:46",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Carter Jr. Free Throw 2 of 2 (14 PTS"
+              },
+              {
+                "time": "6:05",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Gasol Layup Shot: Made (9 PTS) Assist: Lowry (5 AST)"
+              },
+              {
+                "time": "6:51",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Anunoby Free Throw 1 of 2 (5 PTS"
+              },
+              {
+                "time": "6:51",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Anunoby Free Throw 2 of 2 (6 PTS"
+              },
+              {
+                "time": "7:15",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Anunoby Putback Dunk Shot: Made (8 PTS)"
+              },
+              {
+                "time": "7:30",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Floating Jump shot: Made (6 PTS) Assist: LaVine (6 AST)"
+              },
+              {
+                "time": "7:45",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka 3pt Shot: Made (7 PTS) Assist: Lowry (6 AST)"
+              },
+              {
+                "time": "8:05",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Anunoby Running Dunk Shot: Made (10 PTS)"
+              },
+              {
+                "time": "8:24",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Young 3pt Shot: Made (3 PTS) Assist: White (1 AST)"
+              },
+              {
+                "time": "9:19",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Layup Shot: Made (8 PTS) Assist: White (2 AST)"
+              },
+              {
+                "time": "9:27",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry Free Throw 2 of 2 (6 PTS"
+              },
+              {
+                "time": "9:41",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Valentine 3pt Shot: Made (3 PTS) Assist: White (3 AST)"
+              },
+              {
+                "time": "10:24",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Dunn 3pt Shot: Made (3 PTS) Assist: White (4 AST)"
+              },
+              {
+                "time": "11:07",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka Free Throw 1 of 2 (8 PTS"
+              },
+              {
+                "time": "11:07",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka Free Throw 2 of 2 (9 PTS"
+              },
+              {
+                "time": "11:30",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Boucher Running Layup Shot: Made (5 PTS) Assist: Anunoby (2 AST)"
+              }
+            ]
+          }
+        },
+        {
+          "@number": "4",
+          "awayScore": "22",
+          "homeScore": "21",
+          "scoring": {
+            "scoringPlay": [
+              {
+                "time": "0:16",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Valentine Pullup Jump shot: Made (5 PTS) Assist: Satoransky (9 AST)"
+              },
+              {
+                "time": "0:35",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Young Running Layup Shot: Made (5 PTS) Assist: White (5 AST)"
+              },
+              {
+                "time": "1:04",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Valentine 3pt Shot: Made (8 PTS) Assist: Gafford (1 AST)"
+              },
+              {
+                "time": "1:26",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Driving Layup Shot: Made (17 PTS) Assist: Ibaka (1 AST)"
+              },
+              {
+                "time": "1:37",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Alley Oop Dunk Shot: Made (10 PTS) Assist: Valentine (1 AST)"
+              },
+              {
+                "time": "2:01",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Davis Driving Layup Shot: Made (2 PTS)"
+              },
+              {
+                "time": "3:31",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Valentine 3pt Shot: Made (11 PTS)"
+              },
+              {
+                "time": "3:47",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka Free Throw 1 of 2 (10 PTS"
+              },
+              {
+                "time": "3:47",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Ibaka Free Throw 2 of 2 (11 PTS"
+              },
+              {
+                "time": "4:00",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Alley Oop Dunk Shot: Made (12 PTS) Assist: Valentine (2 AST)"
+              },
+              {
+                "time": "5:59",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry Free Throw Technical (7 PTS"
+              },
+              {
+                "time": "5:59",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Free Throw 1 of 2 (18 PTS"
+              },
+              {
+                "time": "5:59",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Free Throw 2 of 2 (19 PTS"
+              },
+              {
+                "time": "6:41",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Running Layup Shot: Made (13 PTS)"
+              },
+              {
+                "time": "7:38",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Hook Shot: Made (21 PTS)"
+              },
+              {
+                "time": "8:08",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry Free Throw 1 of 2 (8 PTS"
+              },
+              {
+                "time": "8:08",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry Free Throw 2 of 2 (9 PTS"
+              },
+              {
+                "time": "9:25",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Valentine Running Layup Shot: Made (13 PTS) Assist: Satoransky (10 AST)"
+              },
+              {
+                "time": "9:32",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Running Layup Shot: Made (15 PTS) Assist: Lowry (7 AST)"
+              },
+              {
+                "time": "10:01",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Siakam Free Throw 2 of 2 (22 PTS"
+              },
+              {
+                "time": "10:15",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Markkanen 3pt Shot: Made (13 PTS) Assist: Satoransky (11 AST)"
+              },
+              {
+                "time": "10:38",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Powell Floating Jump shot: Made (17 PTS)"
+              },
+              {
+                "time": "10:54",
+                "teamAbbreviation": "CHI",
+                "playDescription": "Gafford Putback Layup Shot: Made (14 PTS)"
+              },
+              {
+                "time": "11:10",
+                "teamAbbreviation": "TOR",
+                "playDescription": "Lowry Driving Layup Shot: Made (11 PTS)"
+              }
+            ]
+          }
+        }
+      ],
+      "quarterTotals": {
+        "awayScore": "93",
+        "homeScore": "92"
+      }
+    },
+    "awayTeam": {
+      "awayTeamStats": null,
+      "awayPlayers": {
+        "playerEntry": [
+          {
+            "player": {
+              "ID": "13750",
+              "LastName": "Anunoby",
+              "FirstName": "OG",
+              "Position": "SF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "13766",
+              "LastName": "Boucher",
+              "FirstName": "Chris",
+              "Position": "PF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "17216",
+              "LastName": "Davis",
+              "FirstName": "Terence",
+              "Position": "SG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9295",
+              "LastName": "Gasol",
+              "FirstName": "Marc",
+              "Position": "C"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9116",
+              "LastName": "Hollis-Jefferson",
+              "FirstName": "Rondae",
+              "Position": "PF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9388",
+              "LastName": "Ibaka",
+              "FirstName": "Serge",
+              "Position": "PF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9490",
+              "LastName": "Lowry",
+              "FirstName": "Kyle",
+              "Position": "PG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "13866",
+              "LastName": "Miller",
+              "FirstName": "Malcolm",
+              "Position": "F"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9500",
+              "LastName": "Powell",
+              "FirstName": "Norman",
+              "Position": "SG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "10123",
+              "LastName": "Siakam",
+              "FirstName": "Pascal",
+              "Position": "PF"
+            },
+            "stats": null
+          }
+        ]
+      }
+    },
+    "homeTeam": {
+      "homeTeamStats": null,
+      "homePlayers": {
+        "playerEntry": [
+          {
+            "player": {
+              "ID": "11884",
+              "LastName": "Arcidiacono",
+              "FirstName": "Ryan",
+              "Position": "PG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "15204",
+              "LastName": "Carter Jr.",
+              "FirstName": "Wendell",
+              "Position": "C"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "10129",
+              "LastName": "Dunn",
+              "FirstName": "Kris",
+              "Position": "PG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "17259",
+              "LastName": "Gafford",
+              "FirstName": "Daniel",
+              "Position": "PF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "14118",
+              "LastName": "Harrison",
+              "FirstName": "Shaquille",
+              "Position": "G"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9343",
+              "LastName": "LaVine",
+              "FirstName": "Zach",
+              "Position": "SG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "13734",
+              "LastName": "Markkanen",
+              "FirstName": "Lauri",
+              "Position": "PF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "10151",
+              "LastName": "Satoransky",
+              "FirstName": "Tomas",
+              "Position": "PG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "10157",
+              "LastName": "Valentine",
+              "FirstName": "Denzel",
+              "Position": "SF"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "17193",
+              "LastName": "White",
+              "FirstName": "Coby",
+              "Position": "PG"
+            },
+            "stats": null
+          },
+          {
+            "player": {
+              "ID": "9119",
+              "LastName": "Young",
+              "FirstName": "Thaddeus",
+              "Position": "PF"
+            },
+            "stats": null
+          }
+        ]
+      }
+    }
+  }
+}
