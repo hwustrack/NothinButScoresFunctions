@@ -48,7 +48,8 @@ namespace PostSportsToTwitterFunc
         private static bool IsRoundComplete(JObject response)
         {
             var distinctValues = response["leaderboard"]["players"].Children()["thru"].Values<int?>().Distinct();
-            return distinctValues.Count() <= 2 && distinctValues.Contains(18) && distinctValues.Contains(null); // cut players have null
+            return distinctValues.Count() == 1 && distinctValues.Contains(18) ||
+                distinctValues.Count() == 2 && distinctValues.Contains(18) && distinctValues.Contains(null); // cut players have null
         }
 
         private static string FormatLeaderboard(JObject response)
