@@ -15,6 +15,7 @@ namespace PostSportsToTwitterFunc
         {
             new Team() { TeamAbbreviation = "MIL", TwitterUser = "BucksScores" },
             new Team() { TeamAbbreviation = "CHI", TwitterUser = "Bulls_Scores" },
+            new Team() { TeamAbbreviation = "WAS", TwitterUser = "Wizards_Scores"}
         };
 
         [FunctionName("GetNbaBoxscore")]
