@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Jint;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -21,7 +22,7 @@ namespace PostSportsToTwitterFunc
         public async Task<string> GetFormattedLeaderboardAsync()
         {
             var currentTournamentId = await GetCurrentTournamentIdAsync();
-            Uri GetLeaderboardUri = new Uri($"https://statdata.pgatour.com/r/{currentTournamentId}/leaderboard-v2mini.json");
+            Uri GetLeaderboardUri = await GetLeaderboardUriAsync(currentTournamentId);
 
             var response = await _httpClient.GetStringAsync(GetLeaderboardUri);
             var responseObject = JObject.Parse(response);
@@ -43,6 +44,35 @@ namespace PostSportsToTwitterFunc
             var response = await _httpClient.GetStringAsync(GetCurrentTournamentUri);
             var responseObject = JObject.Parse(response);
             return responseObject["tid"].ToString();
+        }
+
+        private async Task<Uri> GetLeaderboardUriAsync(string currentTournamentId)
+        {
+            /*
+             * In the browser, https://lbdata.pgatour.com/react-lb-js/stroke-play-leaderboard-controller-bcfd63a03ae332cc1919.js:formatted initiates the call to 
+             * https://lbdata.pgatour.com/2020/r/004/leaderboard.json?userTrackingId=exp=1579891271~acl=*~hmac=d2f50fe2d0be8f5fc651ce3849f8180b753e925f1ea554066d5b3a580419f2a7.
+             * It has a function, getUrlWithAuth, which adds the userTrackindId to the leaderboard url.
+             * 
+             * In getUrlWithAuth, i.UserIdTracker.getUserId() gets a hardcoded user id that appears to never change, id8730931. This user id is given as a paremeter
+             * to https://microservice.pgatour.com/js which will output the string needed (exp=1894...). This js file seems to be constantly changing, which is what 
+             * allows the userTrackingId to change with time.
+             * 
+             * The implementation gets the js file, and runs the magic static user id through that function which outputs the userTrackingId.
+             * 
+             */
+
+            Uri GetUserTrackingIdFunctionUri = new Uri("https://microservice.pgatour.com/js");
+
+            var response = await _httpClient.GetStringAsync(GetUserTrackingIdFunctionUri);
+
+            var engine = new Engine();
+            var js = response.Replace(@"(window.pgatour || (window.pgatour = {}))", "a", StringComparison.OrdinalIgnoreCase);
+            js = "var a = {};" + js;
+            js = js + @"t = a.setTrackingUserId; t(""id8730931"");";
+            engine.Execute(js);
+            var userTrackingId = engine.GetCompletionValue();
+
+            return new Uri("https://statdata.pgatour.com/r/004/leaderboard-v2mini.json" + $"?userTrackingId={userTrackingId}");
         }
 
         private static bool IsRoundComplete(JObject response)
