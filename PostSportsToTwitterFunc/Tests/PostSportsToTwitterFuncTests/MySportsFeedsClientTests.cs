@@ -69,7 +69,6 @@ namespace PostSportsToTwitterFuncTests
                 var client = new MySportsFeedsClient(MockLogger.Object, httpClient);
 
                 var gameStatus = await client.GetGameStatusAsync(MySportsFeedsClient.Sport.NBA, forDate, team);
-                var requests = fakeHandler.GetRequests();
 
                 gameStatus.Should().BeNull();
             }

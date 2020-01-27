@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PostSportsToTwitterFunc
 {
-    public class MySportsFeedsClient : IDisposable
+    public class MySportsFeedsClient
     {
         public enum Sport
         {
@@ -93,29 +93,5 @@ namespace PostSportsToTwitterFunc
         {
             return dateTime.ToString("yyyyMMdd", new CultureInfo("en-US"));
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _httpClient.Dispose();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-        }
-        #endregion
     }
 }

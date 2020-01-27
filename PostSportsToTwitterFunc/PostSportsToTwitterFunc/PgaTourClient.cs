@@ -8,14 +8,14 @@ using Newtonsoft.Json.Linq;
 
 namespace PostSportsToTwitterFunc
 {
-    public sealed class PgaTourClient : IDisposable
+    public sealed class PgaTourClient
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger _log;
 
-        public PgaTourClient(ILogger log)
+        public PgaTourClient(ILogger log, HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
             _log = log;
         }
 
@@ -72,7 +72,7 @@ namespace PostSportsToTwitterFunc
             engine.Execute(js);
             var userTrackingId = engine.GetCompletionValue();
 
-            return new Uri("https://statdata.pgatour.com/r/004/leaderboard-v2mini.json" + $"?userTrackingId={userTrackingId}");
+            return new Uri($"https://statdata.pgatour.com/r/{currentTournamentId}/leaderboard-v2mini.json" + $"?userTrackingId={userTrackingId}");
         }
 
         private static bool IsRoundComplete(JObject response)
@@ -85,15 +85,14 @@ namespace PostSportsToTwitterFunc
         private static string FormatLeaderboard(JObject response)
         {
             string formattedResponse = string.Empty;
-            int currentRound;
-            string tournamentName;
-            string currentPosition;
-            string playerName;
-            int currentScore;
+            int currentRound, totalRounds, currentScore;
+            string tournamentName, roundName, currentPosition, playerName;
 
             currentRound = response["leaderboard"]["current_round"].Value<int>();
+            totalRounds = response["leaderboard"]["total_rounds"].Value<int>();
+            roundName = currentRound == totalRounds ? "Final round" : $"Round {currentRound}";
             tournamentName = response["leaderboard"]["tournament_name"].Value<string>();
-            formattedResponse += $"Round {currentRound} of the {tournamentName} is complete.{Environment.NewLine}{Environment.NewLine}";
+            formattedResponse += $"{roundName} of the {tournamentName} is complete.{Environment.NewLine}{Environment.NewLine}";
 
             for (int i = 0; i < 5; i++)
             {
@@ -106,31 +105,5 @@ namespace PostSportsToTwitterFunc
 
             return formattedResponse;
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _httpClient.Dispose();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }

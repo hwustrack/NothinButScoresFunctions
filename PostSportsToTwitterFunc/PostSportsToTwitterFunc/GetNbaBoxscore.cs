@@ -22,8 +22,9 @@ namespace PostSportsToTwitterFunc
         public static async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
             using (HttpClient httpClient = new HttpClient())
-            using (MySportsFeedsClient sportsClient = new MySportsFeedsClient(log, httpClient))
             {
+                MySportsFeedsClient sportsClient = new MySportsFeedsClient(log, httpClient);
+
                 foreach (Team team in Teams)
                 {
                     string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, team.TeamAbbreviation);
