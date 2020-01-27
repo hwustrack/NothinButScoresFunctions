@@ -49,11 +49,12 @@ namespace PostSportsToTwitterFuncTests
                 leaderboard.Should().Contain(expectedLeaderboard);
                 leaderboard.Should().Contain(expectedTournament);
                 leaderboard.Should().Contain(expectedRound);
-                requests.Should().NotBeEmpty()
-                    .And.HaveCount(3);
+                requests.Should().NotBeEmpty().And.HaveCount(3);
                 requests.Where(r => r.RequestUri.ToString().Contains("message")).Should().NotBeEmpty().And.HaveCount(1);
                 requests.Where(r => r.RequestUri.ToString().Contains("microservice")).Should().NotBeEmpty().And.HaveCount(1);
-                requests.Where(r => r.RequestUri.ToString().Contains("leaderboard")).Should().NotBeEmpty().And.HaveCount(1);
+                requests.Where(r => r.RequestUri.ToString().Contains("leaderboard"))
+                    .Where(r => r.RequestUri.ToString().Contains("?userTrackingId=exp=1579728006~acl=*~hmac=693a928b736c237c2938fbaae166664ab683bb6fcf9c007f5e67e1754e12a9c8"))
+                    .Should().NotBeEmpty().And.HaveCount(1);
             }
         }
 
