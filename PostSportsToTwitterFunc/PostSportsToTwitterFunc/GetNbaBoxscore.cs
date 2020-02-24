@@ -23,20 +23,20 @@ namespace PostSportsToTwitterFunc
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                //MySportsFeedsClient sportsClient = new MySportsFeedsClient(log, httpClient);
+                MySportsFeedsClient sportsClient = new MySportsFeedsClient(log, httpClient);
 
-                //foreach (Team team in Teams)
-                //{
-                //    string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, team.TeamAbbreviation);
+                foreach (Team team in Teams)
+                {
+                    string gameStatus = await sportsClient.GetGameStatusAsync(Sport, ForDate, team.TeamAbbreviation);
 
-                //    TwitterClient twitterClient = new TwitterClient(log);
-                //    twitterClient.PostTweetIfNotAlreadyPosted(team.TwitterUser, gameStatus);
-                //}
+                    TwitterClient twitterClient = new TwitterClient(log);
+                    twitterClient.PostTweetIfNotAlreadyPosted(team.TwitterUser, gameStatus);
+                }
 
                 EspnClient espnClient = new EspnClient(log, httpClient);
-                string gameStatus = await espnClient.GetGameStatusAsync(EspnClient.Sport.NBA, "BOS");
-                TwitterClient twitterClient = new TwitterClient(log);
-                twitterClient.PostTweetIfNotAlreadyPosted("qxnpop", gameStatus);
+                string status = await espnClient.GetGameStatusAsync(EspnClient.Sport.NBA, "MIL");
+                TwitterClient twitter = new TwitterClient(log);
+                twitter.PostTweetIfNotAlreadyPosted("qxnpop", status);
             }
         }
     }
