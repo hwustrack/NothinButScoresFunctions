@@ -33,43 +33,49 @@ namespace PostSportsToTwitterFunc
             _log = log;
         }
 
-        public async Task<string> GetGameStatusAsync(Sport sport, string teamAbbreviation)
+        public async Task<Dictionary<string, string>> GetGameStatusesAsync(Sport sport, List<string> teamAbbreviations)
         {
             Uri scoreboardUri = new Uri(BaseUri, $"{SportToScoreboardUri[sport]}{QueryParameters}");
 
             var response = await _httpClient.GetStringAsync(scoreboardUri);
-            var gameStatus = GetGameStatusFromResponse(response, teamAbbreviation);
+            var gameStatuses = GetGameStatusesFromResponse(response, teamAbbreviations);
 
-            return gameStatus;
+            return gameStatuses;
         }
 
-        private string GetGameStatusFromResponse(string response, string teamAbbreviation)
+        private Dictionary<string, string> GetGameStatusesFromResponse(string response, List<string> teamAbbreviations)
         {
             var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
             if (responseObject == null)
             {
-                _log.LogInformation($"Could not parse response for {teamAbbreviation}. Exiting.");
+                _log.LogInformation($"Could not parse response for {teamAbbreviations}. Exiting.");
                 return null;
             }
 
-            var ev = GetEventFromResponse(responseObject, teamAbbreviation);
-            if (ev == null) return null;
-            if (!IsGameComplete(ev)) return null;
+            Dictionary<string, string> statuses = new Dictionary<string, string>();
+            foreach (var teamAbbreviation in teamAbbreviations)
+            {
+                var ev = GetEventFromResponse(responseObject, teamAbbreviation);
+                if (ev == null) continue;
+                if (!IsGameComplete(ev)) continue;
 
-            var competitors = ev["competitions"]?[0]?["competitors"];
-            var awayTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "away").First();
-            var homeTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "home").First();
-            var awayTeamAbbreviation = awayTeam["team"]?["abbreviation"].Value<string>();
-            var homeTeamAbbreviation = homeTeam["team"]?["abbreviation"].Value<string>();
-            var team = awayTeamAbbreviation == teamAbbreviation ? awayTeam : homeTeam;
-            var teamName = team["team"]?["name"].Value<string>();
-            var awayScore = awayTeam["score"].Value<string>();
-            var homeScore = homeTeam["score"].Value<string>();
-            var date = ev["date"].Value<DateTime>().ToUniversalTime();
-            var convertedDate = TimeZoneInfo.ConvertTimeFromUtc(date, DisplayTimeZone).ToLongDateString();
-            return $"{teamName} game is complete.{Environment.NewLine}" +
-                $"{awayTeamAbbreviation}: {awayScore}, {homeTeamAbbreviation}: {homeScore}{Environment.NewLine}" +
-                $"{convertedDate}";
+                var competitors = ev["competitions"]?[0]?["competitors"];
+                var awayTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "away").First();
+                var homeTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "home").First();
+                var awayTeamAbbreviation = awayTeam["team"]?["abbreviation"].Value<string>();
+                var homeTeamAbbreviation = homeTeam["team"]?["abbreviation"].Value<string>();
+                var team = awayTeamAbbreviation == teamAbbreviation ? awayTeam : homeTeam;
+                var teamName = team["team"]?["name"].Value<string>();
+                var awayScore = awayTeam["score"].Value<string>();
+                var homeScore = homeTeam["score"].Value<string>();
+                var date = ev["date"].Value<DateTime>().ToUniversalTime();
+                var convertedDate = TimeZoneInfo.ConvertTimeFromUtc(date, DisplayTimeZone).ToLongDateString();
+                var status = $"{teamName} game is complete.{Environment.NewLine}" +
+                    $"{awayTeamAbbreviation}: {awayScore}, {homeTeamAbbreviation}: {homeScore}{Environment.NewLine}" +
+                    $"{convertedDate}";
+                statuses.Add(teamAbbreviation, status);
+            }
+            return statuses;
         }
 
         private static JToken GetEventFromResponse(JObject response, string teamAbbreviation)

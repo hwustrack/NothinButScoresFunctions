@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
@@ -32,11 +33,18 @@ namespace PostSportsToTwitterFunc
                     TwitterClient twitterClient = new TwitterClient(log);
                     twitterClient.PostTweetIfNotAlreadyPosted(team.TwitterUser, gameStatus);
                 }
+            }
 
+            using (HttpClient httpClient = new HttpClient())
+            {
                 EspnClient espnClient = new EspnClient(log, httpClient);
-                string status = await espnClient.GetGameStatusAsync(EspnClient.Sport.NBA, "MIL");
+                var statuses = await espnClient.GetGameStatusesAsync(EspnClient.Sport.NBA, new List<string>() { "MIL", "CHI" });
+
                 TwitterClient twitter = new TwitterClient(log);
-                twitter.PostTweetIfNotAlreadyPosted("qxnpop", status);
+                foreach (var status in statuses.Values)
+                {
+                    twitter.PostTweetIfNotAlreadyPosted("qxnpop", status);
+                }
             }
         }
     }
