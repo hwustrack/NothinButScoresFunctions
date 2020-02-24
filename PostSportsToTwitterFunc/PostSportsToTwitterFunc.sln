@@ -7,6 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostSportsToTwitterFunc", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostSportsToTwitterFuncTests", "Tests\PostSportsToTwitterFuncTests\PostSportsToTwitterFuncTests.csproj", "{F008ED3B-67F5-42FF-9670-EAA0EC674C1D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1AC21981-A539-40BD-8341-81E414AB9DC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{93352AA5-F17B-4F1B-A7E7-C2C485278266}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,5 +29,14 @@ Global
 		{F008ED3B-67F5-42FF-9670-EAA0EC674C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F008ED3B-67F5-42FF-9670-EAA0EC674C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F008ED3B-67F5-42FF-9670-EAA0EC674C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F008ED3B-67F5-42FF-9670-EAA0EC674C1D} = {1AC21981-A539-40BD-8341-81E414AB9DC7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B85D3FD3-063C-45A0-B5C8-EE240406488C}
 	EndGlobalSection
 EndGlobal
