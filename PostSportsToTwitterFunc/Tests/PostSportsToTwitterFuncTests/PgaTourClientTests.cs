@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -44,11 +43,12 @@ namespace PostSportsToTwitterFuncTests
                 var client = new PgaTourClient(MockLogger.Object, httpClient);
 
                 var leaderboard = await client.GetFormattedLeaderboardAsync();
-                var requests = fakeHandler.GetRequests();
 
                 leaderboard.Should().Contain(expectedLeaderboard);
                 leaderboard.Should().Contain(expectedTournament);
                 leaderboard.Should().Contain(expectedRound);
+
+                var requests = fakeHandler.GetRequests();
                 requests.Should().NotBeEmpty().And.HaveCount(3);
                 requests.Where(r => r.RequestUri.ToString().Contains("message")).Should().NotBeEmpty().And.HaveCount(1);
                 requests.Where(r => r.RequestUri.ToString().Contains("microservice")).Should().NotBeEmpty().And.HaveCount(1);
