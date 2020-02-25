@@ -48,7 +48,7 @@ namespace PostSportsToTwitterFunc
             var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
             if (responseObject == null)
             {
-                _log.LogInformation($"Could not parse response for {teamAbbreviations}. Exiting.");
+                _log.LogError($"Could not parse response for {teamAbbreviations}. Exiting.");
                 return null;
             }
 
@@ -56,8 +56,16 @@ namespace PostSportsToTwitterFunc
             foreach (var teamAbbreviation in teamAbbreviations)
             {
                 var ev = GetEventFromResponse(responseObject, teamAbbreviation);
-                if (ev == null) continue;
-                if (!IsGameComplete(ev)) continue;
+                if (ev == null)
+                {
+                    _log.LogInformation($"{teamAbbreviation} game not found. Skipping.");
+                    continue;
+                }
+                if (!IsGameComplete(ev))
+                {
+                    _log.LogInformation($"{teamAbbreviation} game not complete. Skipping.");
+                    continue;
+                }
 
                 var competitors = ev["competitions"]?[0]?["competitors"];
                 var awayTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "away").First();

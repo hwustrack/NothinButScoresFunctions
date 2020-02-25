@@ -15,7 +15,7 @@ namespace PostSportsToTwitterFuncTests
 {
     public class EspnClientTests
     {
-        private static readonly Mock<ILogger> MockLogger = new Mock<ILogger>();
+        private readonly Mock<ILogger> MockLogger = new Mock<ILogger>();
 
         [Fact]
         [Trait("Category", "Unit")]
@@ -36,6 +36,7 @@ namespace PostSportsToTwitterFuncTests
                 var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
                 statuses.Should().BeEmpty();
+                MockLogger.VerifyLogged(Times.Once());
             }
         }
 
@@ -58,6 +59,7 @@ namespace PostSportsToTwitterFuncTests
                 var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
                 statuses.Should().BeEmpty();
+                MockLogger.VerifyLogged(Times.Once());
             }
         }
 

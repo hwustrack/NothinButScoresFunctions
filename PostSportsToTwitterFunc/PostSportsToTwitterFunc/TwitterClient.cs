@@ -26,11 +26,10 @@ namespace PostSportsToTwitterFunc
             }
             else
             {
-                _log.LogInformation("Tweet already posted. Exiting.");
+                _log.LogInformation($"Tweet already posted for {user}. Exiting.");
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
         public void PostTweet(string user, string content)
         {
             if (string.IsNullOrEmpty(content)) return;
@@ -41,7 +40,6 @@ namespace PostSportsToTwitterFunc
             Tweet.PublishTweet(content);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
         public bool FindTweet(string user, string content)
         {
             if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(content)) return false;
