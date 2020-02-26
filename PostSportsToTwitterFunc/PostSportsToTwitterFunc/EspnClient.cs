@@ -61,13 +61,14 @@ namespace PostSportsToTwitterFunc
                     _log.LogInformation($"{teamAbbreviation} game not found. Skipping.");
                     continue;
                 }
-                if (!IsGameComplete(ev))
+                var gameStatus = ev["status"]["type"]["name"].Value<string>();
+                if (gameStatus != FinalStatusName)
                 {
-                    _log.LogInformation($"{teamAbbreviation} game not complete. Skipping.");
+                    _log.LogInformation($"{teamAbbreviation} game is {gameStatus}. Not complete. Skipping.");
                     continue;
                 }
 
-                var competitors = ev["competitions"]?[0]?["competitors"];
+                var competitors = ev["competitions"][0]["competitors"];
                 var awayTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "away").First();
                 var homeTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "home").First();
                 var awayTeamAbbreviation = awayTeam["team"]?["abbreviation"].Value<string>();
@@ -92,11 +93,6 @@ namespace PostSportsToTwitterFunc
                 .Where(ev => ev["competitions"][0]["competitors"].Children()["team"]["abbreviation"]
                     .Any(abb => abb.Value<string>() == teamAbbreviation))
                 .FirstOrDefault();
-        }
-
-        private static bool IsGameComplete(JToken ev)
-        {
-            return ev?["status"]?["type"]?["name"]?.Value<string>() == FinalStatusName;
         }
     }
 }
