@@ -22,12 +22,7 @@ namespace PostSportsToTwitterFuncTests
         public async Task GetGameStatusAsync_TeamNotPlaying_ReturnNull()
         {
             var teams = new List<string>() { "ABC" };
-
-            var fakeHandler = new FakeHttpMessageHandler();
-            fakeHandler.QueueResponse(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(File.ReadAllText(@"TestData\EspnNbaScoreboard.json"))
-            });
+            var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
@@ -45,12 +40,7 @@ namespace PostSportsToTwitterFuncTests
         public async Task GetGameStatusAsync_GameNotComplete_ReturnNull()
         {
             var teams = new List<string>() { "IND" };
-
-            var fakeHandler = new FakeHttpMessageHandler();
-            fakeHandler.QueueResponse(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(File.ReadAllText(@"TestData\EspnNbaScoreboard.json"))
-            });
+            var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
@@ -68,12 +58,7 @@ namespace PostSportsToTwitterFuncTests
         public async Task GetGameStatusAsync_GameComplete_ReturnFormattedStatus()
         {
             var teams = new List<string>() { "TOR" };
-
-            var fakeHandler = new FakeHttpMessageHandler();
-            fakeHandler.QueueResponse(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(File.ReadAllText(@"TestData\EspnNbaScoreboard.json"))
-            });
+            var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
@@ -84,9 +69,6 @@ namespace PostSportsToTwitterFuncTests
                 statuses.Should().NotBeEmpty().And.HaveCount(1);
                 Assert.Equal(teams.First(), statuses.First().Key);
                 Assert.Equal(GetExpectedTorStatus(), statuses.First().Value);
-
-                var requests = fakeHandler.GetRequests();
-                requests.Should().NotBeEmpty().And.HaveCount(1);
             }
         }
 
@@ -95,12 +77,7 @@ namespace PostSportsToTwitterFuncTests
         public async Task GetGameStatusAsync_GamesComplete_ReturnFormattedStatuses()
         {
             var teams = new List<string>() { "TOR", "DEN" };
-
-            var fakeHandler = new FakeHttpMessageHandler();
-            fakeHandler.QueueResponse(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(File.ReadAllText(@"TestData\EspnNbaScoreboard.json"))
-            });
+            var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
@@ -111,9 +88,6 @@ namespace PostSportsToTwitterFuncTests
                 statuses.Should().NotBeEmpty().And.HaveCount(2);
                 statuses.Should().Contain(new KeyValuePair<string, string>(teams[0], GetExpectedTorStatus()));
                 statuses.Should().Contain(new KeyValuePair<string, string>(teams[1], GetExpectedDenStatus()));
-
-                var requests = fakeHandler.GetRequests();
-                requests.Should().NotBeEmpty().And.HaveCount(1);
             }
         }
 
@@ -131,6 +105,20 @@ namespace PostSportsToTwitterFuncTests
                 "Nuggets game is complete." + Environment.NewLine +
                 "HOU: 110, DEN: 117" + Environment.NewLine +
                 "Sunday, January 26, 2020";
+        }
+
+        private FakeHttpMessageHandler GetFakeHandler()
+        {
+            var handler = new FakeHttpMessageHandler();
+            handler.QueueResponse(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(File.ReadAllText(@"TestData\EspnNbaScoreboard.json"))
+            });
+            handler.QueueResponse(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(File.ReadAllText(@"TestData\EspnNbaScoreboard.json"))
+            });
+            return handler;
         }
     }
 }

@@ -37,6 +37,7 @@ namespace PostSportsToTwitterFunc
         {
             Uri scoreboardUri = new Uri(BaseUri, $"{SportToScoreboardUri[sport]}{QueryParameters}");
 
+            _ = await _httpClient.GetStringAsync(scoreboardUri); // for some reason the first request gets stale data
             var response = await _httpClient.GetStringAsync(scoreboardUri);
             var gameStatuses = GetGameStatusesFromResponse(response, teamAbbreviations);
 
@@ -62,9 +63,11 @@ namespace PostSportsToTwitterFunc
                     continue;
                 }
                 var gameStatus = ev["status"]["type"]["name"].Value<string>();
+                var displayClock = ev["status"]["displayClock"].Value<string>();
+                var period = ev["status"]["period"].Value<string>();
                 if (gameStatus != FinalStatusName)
                 {
-                    _log.LogInformation($"{teamAbbreviation} game is {gameStatus}. Not complete. Skipping.");
+                    _log.LogInformation($"{teamAbbreviation} game is {gameStatus}, period: {period}, displayClock: {displayClock}. Not complete. Skipping.");
                     continue;
                 }
 
