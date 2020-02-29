@@ -24,20 +24,21 @@ namespace PostSportsToTwitterFunc
         };
         private static readonly TimeZoneInfo DisplayTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
 
-        private readonly HttpClient _httpClient;
         private readonly ILogger _log;
+        private readonly IClock _clock;
+        private readonly HttpClient _httpClient;
 
-        public EspnClient(ILogger log, HttpClient httpClient)
+        public EspnClient(ILogger log, IClock clock, HttpClient httpClient)
         {
-            _httpClient = httpClient;
             _log = log;
+            _clock = clock;
+            _httpClient = httpClient;
         }
 
         public async Task<Dictionary<string, string>> GetGameStatusesAsync(Sport sport, List<string> teamAbbreviations)
         {
-            Uri scoreboardUri = new Uri(BaseUri, $"{SportToScoreboardUri[sport]}{QueryParameters}");
+            Uri scoreboardUri = new Uri(BaseUri, $"{SportToScoreboardUri[sport]}{QueryParameters}&{GetDateParameters()}");
 
-            _ = await _httpClient.GetStringAsync(scoreboardUri); // for some reason the first request gets stale data
             var response = await _httpClient.GetStringAsync(scoreboardUri);
             var gameStatuses = GetGameStatusesFromResponse(response, teamAbbreviations);
 
@@ -96,6 +97,14 @@ namespace PostSportsToTwitterFunc
                 .Where(ev => ev["competitions"][0]["competitors"].Children()["team"]["abbreviation"]
                     .Any(abb => abb.Value<string>() == teamAbbreviation))
                 .FirstOrDefault();
+        }
+
+        private string GetDateParameters()
+        {
+            var pst = TimeZoneInfo.ConvertTimeFromUtc(_clock.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"));
+            var pstDate = pst.ToString("yyyyMMdd");
+            var epoch = _clock.Now.ToUnixTimeSeconds();
+            return $"dates={pstDate}&{epoch}";
         }
     }
 }

@@ -16,6 +16,31 @@ namespace PostSportsToTwitterFuncTests
     public class EspnClientTests
     {
         private readonly Mock<ILogger> MockLogger = new Mock<ILogger>();
+        private readonly FakeClock FakeClock = new FakeClock();
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public async Task GetGameStatusAsync_IncludesDates()
+        {
+            var teams = new List<string>() { "ABC" };
+            var fakeHandler = GetFakeHandler();
+            FakeClock.UtcNow = new DateTime(2019, 10, 20);
+            FakeClock.Now = new DateTimeOffset(FakeClock.UtcNow);
+
+            using (var httpClient = new HttpClient(fakeHandler))
+            {
+                var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
+
+                var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
+            }
+
+            var requests = fakeHandler.GetRequests();
+            requests.Should().NotBeEmpty().And.HaveCount(1);
+            var queryString = requests.First().RequestUri.Query;
+            var queryCollection = System.Web.HttpUtility.ParseQueryString(queryString);
+            queryCollection.Get("dates").Should().Be("20191019");
+            queryCollection[queryCollection.Count - 1].Should().Be(FakeClock.Now.ToUnixTimeSeconds().ToString());
+        }
 
         [Fact]
         [Trait("Category", "Unit")]
@@ -26,7 +51,7 @@ namespace PostSportsToTwitterFuncTests
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
-                var client = new EspnClient(MockLogger.Object, httpClient);
+                var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
                 var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
@@ -44,7 +69,7 @@ namespace PostSportsToTwitterFuncTests
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
-                var client = new EspnClient(MockLogger.Object, httpClient);
+                var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
                 var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
@@ -62,7 +87,7 @@ namespace PostSportsToTwitterFuncTests
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
-                var client = new EspnClient(MockLogger.Object, httpClient);
+                var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
                 var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
@@ -81,7 +106,7 @@ namespace PostSportsToTwitterFuncTests
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
-                var client = new EspnClient(MockLogger.Object, httpClient);
+                var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
                 var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 

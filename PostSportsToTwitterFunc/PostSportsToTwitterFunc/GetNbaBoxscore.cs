@@ -37,7 +37,7 @@ namespace PostSportsToTwitterFunc
 
             using (HttpClient httpClient = new HttpClient())
             {
-                EspnClient espnClient = new EspnClient(log, httpClient);
+                EspnClient espnClient = new EspnClient(log, new Clock(), httpClient);
                 var statuses = await espnClient.GetGameStatusesAsync(EspnClient.Sport.NBA, new List<string>() { "MIL", "CHI", "WSH", "LAL" });
 
                 TwitterClient twitter = new TwitterClient(log);
