@@ -35,32 +35,31 @@ namespace PostSportsToTwitterFunc
             _httpClient = httpClient;
         }
 
-        public async Task<Dictionary<string, string>> GetGameStatusesAsync(Sport sport, List<string> teamAbbreviations)
+        public async Task SetGameStatusesAsync(Sport sport, List<Team> teams)
         {
             Uri scoreboardUri = new Uri(BaseUri, $"{SportToScoreboardUri[sport]}{QueryParameters}&{GetDateParameters()}");
 
             var response = await _httpClient.GetStringAsync(scoreboardUri);
-            var gameStatuses = GetGameStatusesFromResponse(response, teamAbbreviations);
+            SetGameStatusesFromResponse(response, teams);
 
-            return gameStatuses;
+            return;
         }
 
-        private Dictionary<string, string> GetGameStatusesFromResponse(string response, List<string> teamAbbreviations)
+        private void SetGameStatusesFromResponse(string response, List<Team> teams)
         {
             var responseObject = !string.IsNullOrWhiteSpace(response) ? JObject.Parse(response) : null;
             if (responseObject == null)
             {
-                _log.LogError($"Could not parse response for {teamAbbreviations}. Exiting.");
-                return null;
+                _log.LogError($"Could not parse response. Exiting.");
+                return;
             }
 
-            Dictionary<string, string> statuses = new Dictionary<string, string>();
-            foreach (var teamAbbreviation in teamAbbreviations)
+            foreach (var team in teams)
             {
-                var ev = GetEventFromResponse(responseObject, teamAbbreviation);
+                var ev = GetEventFromResponse(responseObject, team.TeamAbbreviation);
                 if (ev == null)
                 {
-                    _log.LogInformation($"{teamAbbreviation} game not found. Skipping.");
+                    _log.LogInformation($"{team.TeamAbbreviation} game not found. Skipping.");
                     continue;
                 }
                 var gameStatus = ev["status"]["type"]["name"].Value<string>();
@@ -68,7 +67,7 @@ namespace PostSportsToTwitterFunc
                 var period = ev["status"]["period"].Value<string>();
                 if (gameStatus != FinalStatusName)
                 {
-                    _log.LogInformation($"{teamAbbreviation} game is {gameStatus}, period: {period}, displayClock: {displayClock}. Not complete. Skipping.");
+                    _log.LogInformation($"{team.TeamAbbreviation} game is {gameStatus}, period: {period}, displayClock: {displayClock}. Not complete. Skipping.");
                     continue;
                 }
 
@@ -77,8 +76,8 @@ namespace PostSportsToTwitterFunc
                 var homeTeam = competitors?.Children().Where(c => c["homeAway"].Value<string>() == "home").First();
                 var awayTeamAbbreviation = awayTeam["team"]?["abbreviation"].Value<string>();
                 var homeTeamAbbreviation = homeTeam["team"]?["abbreviation"].Value<string>();
-                var team = awayTeamAbbreviation == teamAbbreviation ? awayTeam : homeTeam;
-                var teamName = team["team"]?["name"].Value<string>();
+                var thisTeam = awayTeamAbbreviation == team.TeamAbbreviation ? awayTeam : homeTeam;
+                var teamName = thisTeam["team"]?["name"].Value<string>();
                 var awayScore = awayTeam["score"].Value<string>();
                 var homeScore = homeTeam["score"].Value<string>();
                 var date = ev["date"].Value<DateTime>().ToUniversalTime();
@@ -86,9 +85,8 @@ namespace PostSportsToTwitterFunc
                 var status = $"{teamName} game is complete.{Environment.NewLine}" +
                     $"{awayTeamAbbreviation}: {awayScore}, {homeTeamAbbreviation}: {homeScore}{Environment.NewLine}" +
                     $"{convertedDate}";
-                statuses.Add(teamAbbreviation, status);
+                team.Status = status;
             }
-            return statuses;
         }
 
         private static JToken GetEventFromResponse(JObject response, string teamAbbreviation)

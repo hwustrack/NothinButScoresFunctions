@@ -20,9 +20,9 @@ namespace PostSportsToTwitterFuncTests
 
         [Fact]
         [Trait("Category", "Unit")]
-        public async Task GetGameStatusAsync_IncludesDates()
+        public async Task SetGameStatusesAsync_IncludesDates()
         {
-            var teams = new List<string>() { "ABC" };
+            var teams = new List<Team>() { new Team() { TeamAbbreviation = "ABC" } };
             var fakeHandler = GetFakeHandler();
             FakeClock.UtcNow = new DateTime(2019, 10, 20);
             FakeClock.Now = new DateTimeOffset(FakeClock.UtcNow);
@@ -31,7 +31,7 @@ namespace PostSportsToTwitterFuncTests
             {
                 var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
-                var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
+                await client.SetGameStatusesAsync(EspnClient.Sport.NBA, teams);
             }
 
             var requests = fakeHandler.GetRequests();
@@ -44,75 +44,76 @@ namespace PostSportsToTwitterFuncTests
 
         [Fact]
         [Trait("Category", "Unit")]
-        public async Task GetGameStatusAsync_TeamNotPlaying_ReturnNull()
+        public async Task SetGameStatusesAsync_TeamNotPlaying_ReturnNull()
         {
-            var teams = new List<string>() { "ABC" };
+            var teams = new List<Team>() { new Team() { TeamAbbreviation = "ABC" } };
             var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
                 var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
-                var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
+                await client.SetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
-                statuses.Should().BeEmpty();
+                teams.First().Status.Should().BeNull();
                 MockLogger.VerifyLogged(Times.Once());
             }
         }
 
         [Fact]
         [Trait("Category", "Unit")]
-        public async Task GetGameStatusAsync_GameNotComplete_ReturnNull()
+        public async Task SetGameStatusesAsync_GameNotComplete_ReturnNull()
         {
-            var teams = new List<string>() { "IND" };
+            var teams = new List<Team>() { new Team() { TeamAbbreviation = "IND" } };
             var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
                 var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
-                var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
+                await client.SetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
-                statuses.Should().BeEmpty();
+                teams.First().Status.Should().BeNull();
                 MockLogger.VerifyLogged(Times.Once());
             }
         }
 
         [Fact]
         [Trait("Category", "Unit")]
-        public async Task GetGameStatusAsync_GameComplete_ReturnFormattedStatus()
+        public async Task SetGameStatusesAsync_GameComplete_ReturnFormattedStatus()
         {
-            var teams = new List<string>() { "TOR" };
+            var teams = new List<Team>() { new Team() { TeamAbbreviation = "TOR" } };
             var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
                 var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
-                var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
+                await client.SetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
-                statuses.Should().NotBeEmpty().And.HaveCount(1);
-                Assert.Equal(teams.First(), statuses.First().Key);
-                Assert.Equal(GetExpectedTorStatus(), statuses.First().Value);
+                teams.First().Status.Should().Be(GetExpectedTorStatus());
             }
         }
 
         [Fact]
         [Trait("Category", "Unit")]
-        public async Task GetGameStatusAsync_GamesComplete_ReturnFormattedStatuses()
+        public async Task SetGameStatusesAsync_GamesComplete_ReturnFormattedStatuses()
         {
-            var teams = new List<string>() { "TOR", "DEN" };
+            var teams = new List<Team>() 
+            { 
+                new Team() { TeamAbbreviation = "TOR" }, 
+                new Team() { TeamAbbreviation = "DEN" }
+            };
             var fakeHandler = GetFakeHandler();
 
             using (var httpClient = new HttpClient(fakeHandler))
             {
                 var client = new EspnClient(MockLogger.Object, FakeClock, httpClient);
 
-                var statuses = await client.GetGameStatusesAsync(EspnClient.Sport.NBA, teams);
+                await client.SetGameStatusesAsync(EspnClient.Sport.NBA, teams);
 
-                statuses.Should().NotBeEmpty().And.HaveCount(2);
-                statuses.Should().Contain(new KeyValuePair<string, string>(teams[0], GetExpectedTorStatus()));
-                statuses.Should().Contain(new KeyValuePair<string, string>(teams[1], GetExpectedDenStatus()));
+                teams[0].Status.Should().Be(GetExpectedTorStatus());
+                teams[1].Status.Should().Be(GetExpectedDenStatus());
             }
         }
 

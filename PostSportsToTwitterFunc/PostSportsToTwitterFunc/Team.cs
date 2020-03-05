@@ -8,5 +8,6 @@ namespace PostSportsToTwitterFunc
     {
         public string TeamAbbreviation { get; set; }
         public string TwitterUser { get; set; }
+        public string Status { get; set; }
     }
 }
