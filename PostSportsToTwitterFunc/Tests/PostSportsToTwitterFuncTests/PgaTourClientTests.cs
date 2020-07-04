@@ -53,7 +53,7 @@ namespace PostSportsToTwitterFuncTests
                 requests.Where(r => r.RequestUri.ToString().Contains("message")).Should().NotBeEmpty().And.HaveCount(1);
                 requests.Where(r => r.RequestUri.ToString().Contains("microservice")).Should().NotBeEmpty().And.HaveCount(1);
                 requests.Where(r => r.RequestUri.ToString().Contains("leaderboard"))
-                    .Where(r => r.RequestUri.ToString().Contains("?userTrackingId=exp=1579728006~acl=*~hmac=693a928b736c237c2938fbaae166664ab683bb6fcf9c007f5e67e1754e12a9c8"))
+                    .Where(r => r.RequestUri.ToString().Contains("?userTrackingId=exp=1593885498~acl=*~hmac=a3c399f0ceb4d3e05fd72565bd04bc144c525c77945462162130662d25f892ee"))
                     .Should().NotBeEmpty().And.HaveCount(1);
             }
         }

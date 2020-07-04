@@ -66,9 +66,16 @@ namespace PostSportsToTwitterFunc
             var response = await _httpClient.GetStringAsync(GetUserTrackingIdFunctionUri);
 
             var engine = new Engine();
-            var js = response.Replace(@"(window.pgatour || (window.pgatour = {}))", "a", StringComparison.OrdinalIgnoreCase);
+            var js = response.Replace(@"window.pgatour || (window.pgatour = {})", "a", StringComparison.OrdinalIgnoreCase);
+
+            js = js.Replace(@"for(var _ of $)", @"for (var _ = 0; _ < $.length; _++)", StringComparison.OrdinalIgnoreCase); // looks like jint doesn't support 'of' keyword
+            js = js.Replace(@"$$__ =($$__*31+_.charCodeAt(0))&$$_;", @"$$__ = ($$__ * 31 + $.charCodeAt(_)) & $$_;", StringComparison.OrdinalIgnoreCase); // see above
+            js = js.Replace(@"$__$[__$_]=(_$_$=>", @"$__$[__$_] = (function(_$_$)", StringComparison.OrdinalIgnoreCase); // looks like jint doesn't support => syntax
+            //js = Regex.Replace(js, @"return __;(\s*)};", "return __; });"); // actually don't need this, be careful about formatting using VS Code it removes parens sometimes
+
             js = "var a = {};" + js;
             js = js + @"t = a.setTrackingUserId; t(""id8730931"");";
+
             engine.Execute(js);
             var userTrackingId = engine.GetCompletionValue();
 
